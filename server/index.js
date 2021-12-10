@@ -15,7 +15,7 @@ var mySqlConnection = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "classicmodels"
+    database: "udemy"
 });
 
 mySqlConnection.connect((err) => {
@@ -35,8 +35,8 @@ app.get("/", (req, res) => {
     res.send("MySQL SampleDatabase API");
 });
 
-app.get('/employees', (req, res) => {
-    mySqlConnection.query('SELECT * From employees', (err, rows, fields) => {
+app.get('/product', (req, res) => {
+    mySqlConnection.query('SELECT * From sales', (err, rows, fields) => {
         if (!err)
             res.send(rows)
         else
