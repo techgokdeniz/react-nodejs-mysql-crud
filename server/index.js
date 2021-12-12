@@ -43,3 +43,52 @@ app.get('/product', (req, res) => {
             console.log(err);
     })
 });
+
+app.use(bodyparser.urlencoded({ extended: true }))
+app.use(express.json());
+
+app.post('/insert', (req, res) => {
+    const UrunAdi = req.body.pname;
+    const Adet = req.body.pnumber;
+    const Fiyat = req.body.pprice;
+    mySqlConnection.query('INSERT INTO sales (urunadi,adet,fiyat) VALUES (?,?,?)', [UrunAdi, Adet, Fiyat], (err, result) => {
+        if (!err)
+            res.send("Succes")
+        else
+            console.log(err);
+    });
+});
+
+app.delete("/delete/:cell", (req, res) => {
+    const deleteId = req.params.cell;
+    mySqlConnection.query('DELETE FROM sales WHERE id=?', [deleteId], (err, result) => {
+        if (!err)
+            res.send("Succes")
+        else
+            console.log(err);
+    });
+})
+
+app.get("/product/:id", (req, res) => {
+    const ID = req.params.id;
+    mySqlConnection.query('SELECT * From sales WHERE id=?', [ID], (err, rows, fields) => {
+        if (!err) {
+            res.send(rows)
+        } else
+            console.log(err);
+    })
+})
+
+app.put("/product/:id", (req, res) => {
+    const id = req.params.id;
+    const urunadi = req.body.urunadi;
+    const fiyat = req.body.fiyat;
+    const adet = req.body.adet;
+
+    mySqlConnection.query('UPDATE sales set urunadi=?,fiyat=?,adet=? WHERE id=?', [urunadi, fiyat, adet, id], (err, rows, fields) => {
+        if (!err) {
+            res.send("Success");
+        } else
+            console.log(err);
+    })
+})
